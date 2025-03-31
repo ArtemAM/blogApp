@@ -23,11 +23,11 @@ initializeDatabase();
 app.use(e.json());
 
 // Подключение маршрутов
-app.use("/", registerRoute);
-app.use("/", loginRoute);
-app.use("/", userRoute);
-app.use("/", postsRoute);
-app.use("/", uploadRoute);
+app.use("/auth", registerRoute);
+app.use("/auth", loginRoute);
+app.use("/user", userRoute);
+app.use("/posts", postsRoute);
+app.use("/upload", uploadRoute);
 
 // Раздача статических файлов из папки uploads
 app.use("/uploads", e.static(path.join(__dirname, "uploads")));

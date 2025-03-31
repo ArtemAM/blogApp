@@ -4,7 +4,7 @@ import { findUserById } from "../services/userService.js";
 
 const router = Router();
 
-router.get("/user", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
 	try {
 		// Получаем ID пользователя из токена
 		const userId = req.user.id;

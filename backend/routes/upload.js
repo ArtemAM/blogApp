@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/authMiddleware.js";
 const router = Router();
 
 // Маршрут для загрузки изображений
-router.post("/upload", authMiddleware, upload.single("image"), (req, res) => {
+router.post("/", authMiddleware, upload.single("image"), (req, res) => {
 	try {
 		// Если файл был загружен, возвращаем путь к файлу
 		if (!req.file) {

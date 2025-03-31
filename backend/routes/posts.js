@@ -14,7 +14,7 @@ import {
 const router = Router();
 
 // Маршрут для создания статьи
-router.post("/posts", authMiddleware, postValidation, async (req, res) => {
+router.post("/", authMiddleware, postValidation, async (req, res) => {
 	// Проверка ошибок валидации
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
@@ -40,7 +40,7 @@ router.post("/posts", authMiddleware, postValidation, async (req, res) => {
 });
 
 // Маршрут для получения всех статей
-router.get("/posts", async (req, res) => {
+router.get("/", async (req, res) => {
 	try {
 		// Вызов функции для получения всех статей
 		const posts = await getAllPosts();
@@ -54,7 +54,7 @@ router.get("/posts", async (req, res) => {
 });
 
 // Маршрут для получения одной статьи
-router.get("/posts/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
 	try {
 		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
 
@@ -78,7 +78,7 @@ router.get("/posts/:id", async (req, res) => {
 });
 
 // Маршрут для удаления статьи
-router.delete("/posts/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
 	try {
 		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
 		const userId = req.user.id; // Получаем ID пользователя из токена
@@ -102,7 +102,7 @@ router.delete("/posts/:id", authMiddleware, async (req, res) => {
 });
 
 // Маршрут для обновления статьи
-router.put("/posts/:id", authMiddleware, postValidation, async (req, res) => {
+router.put("/:id", authMiddleware, postValidation, async (req, res) => {
 	try {
 		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
 		const userId = req.user.id; // Получаем ID пользователя из токена
