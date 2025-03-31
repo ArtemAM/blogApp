@@ -4,6 +4,7 @@ import { initializeDatabase } from "./db.js";
 import registerRoute from "./routes/register.js";
 import loginRoute from "./routes/login.js";
 import userRoute from "./routes/user.js";
+import postsRoute from "./routes/posts.js";
 
 dotenv.config();
 const app = e();
@@ -18,6 +19,7 @@ app.use(e.json());
 app.use("/", registerRoute);
 app.use("/", loginRoute);
 app.use("/", userRoute);
+app.use("/", postsRoute);
 
 app.listen(PORT, (err) => {
 	if (err) {
