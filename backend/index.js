@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import uploadRoute from "./routes/upload.js";
 import morgan from "morgan";
+import cors from "cors";
 
 dotenv.config();
 const app = e();
@@ -22,6 +23,7 @@ const __dirname = path.dirname(__filename);
 initializeDatabase();
 
 // Middleware
+app.use(cors());
 app.use(morgan("dev"));
 app.use(e.json({ limit: "10mb" }));
 
