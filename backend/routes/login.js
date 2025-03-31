@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import { findUserByEmail } from "../services/userService.js";
 import { generateToken } from "../utils/token.js";
-import { loginValidation } from "../validations/login.js";
+import { loginValidation } from "../validations.js";
 
 const router = Router();
 

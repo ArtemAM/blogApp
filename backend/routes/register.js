@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import { registerValidation } from "../validations/register.js";
+import { registerValidation } from "../validations.js";
 import { findUserByEmail, createUser } from "../services/userService.js";
 import { generateToken } from "../utils/token.js";
 
