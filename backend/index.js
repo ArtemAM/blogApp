@@ -8,6 +8,7 @@ import postsRoute from "./routes/posts.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import uploadRoute from "./routes/upload.js";
+import morgan from "morgan";
 
 dotenv.config();
 const app = e();
@@ -20,7 +21,9 @@ const __dirname = path.dirname(__filename);
 // Инициализация базы данных
 initializeDatabase();
 
-app.use(e.json());
+// Middleware
+app.use(morgan("dev"));
+app.use(e.json({ limit: "10mb" }));
 
 // Подключение маршрутов
 app.use("/auth", registerRoute);
