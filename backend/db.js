@@ -1,6 +1,7 @@
 import sqlite3 from "sqlite3";
 import createUserTable from "./tables/usersTable.js";
 import createPostsTable from "./tables/postsTable.js";
+import { seedPosts } from "./seedPosts.js";
 
 // Подключение к базе данных
 const db = new sqlite3.Database("./database.sqlite", (err) => {
@@ -12,9 +13,18 @@ const db = new sqlite3.Database("./database.sqlite", (err) => {
 });
 
 // Создание таблиц
-const initializeDatabase = () => {
-	createUserTable(db);
-	createPostsTable(db);
+const initializeDatabase = async () => {
+	try {
+		// Создаем таблицы последовательно
+		await createUserTable(db);
+		await createPostsTable(db);
+
+		// Добавляем данные после создания таблиц
+		await seedPosts();
+		console.log("Database initialized successfully");
+	} catch (err) {
+		console.error("Error initializing database:", err.message);
+	}
 };
 
 export { db, initializeDatabase };
