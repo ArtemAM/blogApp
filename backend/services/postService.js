@@ -90,3 +90,22 @@ export const incrementPostViews = (postId) => {
 		});
 	});
 };
+
+export const deletePostById = (postId, userId) => {
+	return new Promise((resolve, reject) => {
+		// SQL-запрос для удаления статьи, если пользователь является её автором
+		const query = `
+          DELETE FROM posts
+          WHERE id = ? AND user = ?
+      `;
+
+		db.run(query, [postId, userId], function (err) {
+			if (err) {
+				return reject(err);
+			}
+
+			// Если строка была удалена, возвращаем true, иначе false
+			resolve(this.changes > 0);
+		});
+	});
+};
