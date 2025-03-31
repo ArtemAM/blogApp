@@ -7,6 +7,7 @@ import {
 	getAllPosts,
 	getPostById,
 	incrementPostViews,
+	deletePostById,
 } from "../services/postService.js";
 
 const router = Router();
@@ -72,6 +73,30 @@ router.get("/posts/:id", async (req, res) => {
 	} catch (err) {
 		console.error("Error fetching post:", err);
 		res.status(500).json({ error: "Failed to fetch post" });
+	}
+});
+
+// Маршрут для удаления статьи
+router.delete("/posts/:id", authMiddleware, async (req, res) => {
+	try {
+		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
+		const userId = req.user.id; // Получаем ID пользователя из токена
+
+		// Вызов функции для удаления статьи
+		const deleted = await deletePostById(postId, userId);
+
+		// Если статья не найдена или пользователь не является её автором
+		if (!deleted) {
+			return res.status(404).json({
+				error: "Post not found or you are not authorized to delete this post",
+			});
+		}
+
+		// Возвращаем успешный ответ
+		res.status(200).json({ message: "Post deleted successfully" });
+	} catch (err) {
+		console.error("Error deleting post:", err);
+		res.status(500).json({ error: "Failed to delete post" });
 	}
 });
 
