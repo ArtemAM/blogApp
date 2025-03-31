@@ -2,6 +2,7 @@ import e from "express";
 import dotenv from "dotenv";
 import { initializeDatabase } from "./db.js";
 import registerRoute from "./routes/register.js";
+import loginRoute from "./routes/login.js";
 
 dotenv.config();
 const app = e();
@@ -14,10 +15,7 @@ app.use(e.json());
 
 // Подключение маршрутов
 app.use("/", registerRoute);
-
-app.get("/", (req, res) => {
-	res.send("Hello World! This is the backend server.");
-});
+app.use("/", loginRoute);
 
 app.listen(PORT, (err) => {
 	if (err) {
