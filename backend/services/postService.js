@@ -45,3 +45,31 @@ export const getAllPosts = () => {
 		});
 	});
 };
+
+export const getPostById = (id) => {
+	return new Promise((resolve, reject) => {
+		const query = `
+          SELECT posts.id, posts.title, posts.text, posts.tags, posts.imageUrl, posts.viewsCount, posts.createdAt,
+                 users.fullName AS author
+          FROM posts
+          JOIN users ON posts.user = users.id
+          WHERE posts.id = ?
+      `;
+
+		db.get(query, [id], (err, row) => {
+			if (err) {
+				return reject(err);
+			}
+			if (!row) {
+				return resolve(null); // Если статья не найдена
+			}
+
+			// Преобразуем строку tags обратно в массив
+			const post = {
+				...row,
+				tags: JSON.parse(row.tags),
+			};
+			resolve(post);
+		});
+	});
+};
