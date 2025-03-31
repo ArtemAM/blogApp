@@ -6,6 +6,7 @@ import {
 	createPost,
 	getAllPosts,
 	getPostById,
+	incrementPostViews,
 } from "../services/postService.js";
 
 const router = Router();
@@ -54,6 +55,9 @@ router.get("/posts", async (req, res) => {
 router.get("/posts/:id", async (req, res) => {
 	try {
 		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
+
+		// Увеличиваем счетчик просмотров
+		await incrementPostViews(postId);
 
 		// Вызов функции для получения статьи из базы данных
 		const post = await getPostById(postId);
