@@ -2,6 +2,8 @@ import e from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { db, initializeDatabase } from "./db.js";
+import { registerValidation } from "./validations/register.js";
+import { validationResult } from "express-validator";
 
 dotenv.config();
 const app = e();
@@ -15,6 +17,13 @@ app.use(e.json());
 
 app.get("/", (req, res) => {
 	res.send("Hello World! This is the backend server.");
+});
+
+app.post("/register", registerValidation, (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
 });
 
 app.post("/login", (req, res) => {
