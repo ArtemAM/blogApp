@@ -135,3 +135,15 @@ export const updatePostById = (postId, userId, title, text, tags, imageUrl) => {
 		);
 	});
 };
+
+export const getPostsCount = () => {
+	return new Promise((resolve, reject) => {
+		const query = `SELECT COUNT(*) AS count FROM posts`;
+		db.get(query, (err, row) => {
+			if (err) {
+				return reject(err);
+			}
+			resolve(row.count);
+		});
+	});
+};
