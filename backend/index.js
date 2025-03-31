@@ -13,7 +13,7 @@ initializeDatabase();
 app.use(e.json());
 
 // Подключение маршрутов
-app.use("/api", registerRoute);
+app.use("/", registerRoute);
 
 app.get("/", (req, res) => {
 	res.send("Hello World! This is the backend server.");
