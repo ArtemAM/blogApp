@@ -1,5 +1,6 @@
 import sqlite3 from "sqlite3";
 import createUserTable from "./tables/usersTable.js";
+import createPostsTable from "./tables/postsTable.js";
 
 // Подключение к базе данных
 const db = new sqlite3.Database("./database.sqlite", (err) => {
@@ -13,6 +14,7 @@ const db = new sqlite3.Database("./database.sqlite", (err) => {
 // Создание таблиц
 const initializeDatabase = () => {
 	createUserTable(db);
+	createPostsTable(db);
 };
 
 export { db, initializeDatabase };
