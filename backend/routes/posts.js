@@ -2,7 +2,11 @@ import { Router } from "express";
 import { validationResult } from "express-validator";
 import { postValidation } from "../validations.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import { createPost, getAllPosts } from "../services/postService.js";
+import {
+	createPost,
+	getAllPosts,
+	getPostById,
+} from "../services/postService.js";
 
 const router = Router();
 
@@ -43,6 +47,27 @@ router.get("/posts", async (req, res) => {
 	} catch (err) {
 		console.error("Error fetching posts:", err);
 		res.status(500).json({ error: "Failed to fetch posts" });
+	}
+});
+
+// Маршрут для получения одной статьи
+router.get("/posts/:id", async (req, res) => {
+	try {
+		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
+
+		// Вызов функции для получения статьи из базы данных
+		const post = await getPostById(postId);
+
+		// Если статья не найдена, возвращаем 404
+		if (!post) {
+			return res.status(404).json({ error: "Post not found" });
+		}
+
+		// Возвращаем данные статьи
+		res.status(200).json(post);
+	} catch (err) {
+		console.error("Error fetching post:", err);
+		res.status(500).json({ error: "Failed to fetch post" });
 	}
 });
 
