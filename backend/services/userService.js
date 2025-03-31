@@ -27,3 +27,15 @@ export const createUser = (fullName, email, passwordHash, avatarUrl) => {
 		);
 	});
 };
+
+export const findUserById = (id) => {
+	return new Promise((resolve, reject) => {
+		const query = `SELECT * FROM users WHERE id = ?`;
+		db.get(query, [id], (err, user) => {
+			if (err) {
+				return reject(err);
+			}
+			resolve(user);
+		});
+	});
+};
