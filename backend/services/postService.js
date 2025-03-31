@@ -73,3 +73,20 @@ export const getPostById = (id) => {
 		});
 	});
 };
+
+export const incrementPostViews = (postId) => {
+	return new Promise((resolve, reject) => {
+		const query = `
+          UPDATE posts
+          SET viewsCount = viewsCount + 1
+          WHERE id = ?
+      `;
+
+		db.run(query, [postId], function (err) {
+			if (err) {
+				return reject(err);
+			}
+			resolve(true); // Успешное обновление
+		});
+	});
+};
