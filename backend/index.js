@@ -1,11 +1,15 @@
 import e from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { db, initializeDatabase } from "./db.js";
 
 dotenv.config();
 const app = e();
 const PORT = process.env.PORT;
 const SECRET_KEY = process.env.SECRET_KEY;
+
+// Инициализация базы данных
+initializeDatabase();
 
 app.use(e.json());
 
