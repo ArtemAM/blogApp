@@ -22,3 +22,26 @@ export const createPost = (userId, title, text, tags, imageUrl) => {
 		);
 	});
 };
+
+export const getAllPosts = () => {
+	return new Promise((resolve, reject) => {
+		const query = `
+          SELECT posts.id, posts.title, posts.text, posts.tags, posts.imageUrl, posts.viewsCount, posts.createdAt,
+                 users.fullName AS author
+          FROM posts
+          JOIN users ON posts.user = users.id
+      `;
+
+		db.all(query, [], (err, rows) => {
+			if (err) {
+				return reject(err);
+			}
+			// Преобразуем строку tags обратно в массив
+			const posts = rows.map((post) => ({
+				...post,
+				tags: JSON.parse(post.tags),
+			}));
+			resolve(posts);
+		});
+	});
+};
