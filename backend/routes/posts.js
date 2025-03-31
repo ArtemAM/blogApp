@@ -8,6 +8,7 @@ import {
 	getPostById,
 	incrementPostViews,
 	deletePostById,
+	updatePostById,
 } from "../services/postService.js";
 
 const router = Router();
@@ -97,6 +98,38 @@ router.delete("/posts/:id", authMiddleware, async (req, res) => {
 	} catch (err) {
 		console.error("Error deleting post:", err);
 		res.status(500).json({ error: "Failed to delete post" });
+	}
+});
+
+// Маршрут для обновления статьи
+router.put("/posts/:id", authMiddleware, postValidation, async (req, res) => {
+	try {
+		const postId = req.params.id; // Получаем ID статьи из параметров маршрута
+		const userId = req.user.id; // Получаем ID пользователя из токена
+		const { title, text, tags, imageUrl } = req.body; // Получаем данные для обновления
+
+		// Вызов функции для обновления статьи
+		const updated = await updatePostById(
+			postId,
+			userId,
+			title,
+			text,
+			tags,
+			imageUrl
+		);
+
+		// Если статья не найдена или пользователь не является её автором
+		if (!updated) {
+			return res.status(404).json({
+				error: "Post not found or you are not authorized to update this post",
+			});
+		}
+
+		// Возвращаем успешный ответ
+		res.status(200).json({ message: "Post updated successfully" });
+	} catch (err) {
+		console.error("Error updating post:", err);
+		res.status(500).json({ error: "Failed to update post" });
 	}
 });
 
