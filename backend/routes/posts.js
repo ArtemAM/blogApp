@@ -2,7 +2,7 @@ import { Router } from "express";
 import { validationResult } from "express-validator";
 import { postValidation } from "../validations.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import { createPost } from "../services/postService.js";
+import { createPost, getAllPosts } from "../services/postService.js";
 
 const router = Router();
 
@@ -29,6 +29,20 @@ router.post("/posts", authMiddleware, postValidation, async (req, res) => {
 	} catch (err) {
 		console.error("Error creating post:", err);
 		res.status(500).json({ error: "Failed to create post" });
+	}
+});
+
+// Маршрут для получения всех статей
+router.get("/posts", async (req, res) => {
+	try {
+		// Вызов функции для получения всех статей
+		const posts = await getAllPosts();
+
+		// Возвращаем список статей
+		res.status(200).json(posts);
+	} catch (err) {
+		console.error("Error fetching posts:", err);
+		res.status(500).json({ error: "Failed to fetch posts" });
 	}
 });
 
