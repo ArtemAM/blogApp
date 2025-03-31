@@ -109,3 +109,29 @@ export const deletePostById = (postId, userId) => {
 		});
 	});
 };
+
+export const updatePostById = (postId, userId, title, text, tags, imageUrl) => {
+	return new Promise((resolve, reject) => {
+		const query = `
+          UPDATE posts
+          SET title = ?, text = ?, tags = ?, imageUrl = ?
+          WHERE id = ? AND user = ?
+      `;
+
+		// Преобразуем массив тегов в строку (если передан)
+		const tagsString = tags ? JSON.stringify(tags) : "[]";
+
+		db.run(
+			query,
+			[title, text, tagsString, imageUrl || null, postId, userId],
+			function (err) {
+				if (err) {
+					return reject(err);
+				}
+
+				// Если строка была обновлена, возвращаем true, иначе false
+				resolve(this.changes > 0);
+			}
+		);
+	});
+};
