@@ -39,3 +39,15 @@ export const findUserById = (id) => {
 		});
 	});
 };
+
+export const getUsersCount = () => {
+	return new Promise((resolve, reject) => {
+		const query = `SELECT COUNT(*) AS count FROM users`;
+		db.get(query, (err, row) => {
+			if (err) {
+				return reject(err);
+			}
+			resolve(row.count);
+		});
+	});
+};
