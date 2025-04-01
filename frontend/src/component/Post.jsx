@@ -25,7 +25,9 @@ function Post({ image, avatar, author, date, title, tags, views }) {
         '&:hover .post-actions': { opacity: 1 },
       }}
     >
-      <CardMedia component="img" height="250" image={image} alt={title} />
+      {image && (
+        <CardMedia component="img" height="250" image={image} alt={title} />
+      )}
       <AuthorInfo avatar={avatar} author={author} date={date} />
       <CardContent>
         <Typography variant="h6" gutterBottom>
