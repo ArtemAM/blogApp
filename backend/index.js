@@ -5,6 +5,7 @@ import registerRoute from "./routes/register.js";
 import loginRoute from "./routes/login.js";
 import userRoute from "./routes/user.js";
 import postsRoute from "./routes/posts.js";
+import tagsRoute from "./routes/tags.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import uploadRoute from "./routes/upload.js";
@@ -33,6 +34,7 @@ app.use("/auth", loginRoute);
 app.use("/user", userRoute);
 app.use("/posts", postsRoute);
 app.use("/upload", uploadRoute);
+app.use("/tags", tagsRoute);
 
 // Раздача статических файлов из папки uploads
 app.use("/uploads", e.static(path.join(__dirname, "uploads")));
