@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  ListItemButton,
 } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
 
@@ -19,12 +20,14 @@ function Tags({ tags }) {
       <Divider />
       <List>
         {tags.map((tag) => (
-          <ListItem key={tag} sx={{ paddingLeft: 0 }}>
-            <ListItemIcon>
-              <TagIcon />
-            </ListItemIcon>
-            <ListItemText primary={`${tag}`} />
-          </ListItem>
+          <ListItemButton key={tag} sx={{ padding: 0 }}>
+            <ListItem sx={{ padding: 0 }}>
+              <ListItemIcon>
+                <TagIcon />
+              </ListItemIcon>
+              <ListItemText primary={`${tag}`} />
+            </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </Box>
