@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { postsReducer } from './slices/posts.slices';
+import { postsReducer } from './slices/posts.slice';
 import api from '../api/api';
 
 const extraArgument = {

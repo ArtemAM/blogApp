@@ -4,7 +4,7 @@ import Post from '../component/Post';
 import PostSkeleton from '../component/PostSkeleton';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, postsSlice } from '../redux/slices/posts.slices';
+import { fetchPosts, postsSlice } from '../redux/slices/posts.slice';
 function Home() {
   const dispatch = useDispatch();
   const posts = useSelector(postsSlice.selectors.selectPosts);
