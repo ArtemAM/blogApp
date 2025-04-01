@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { postsReducer } from './slices/posts.slice';
+import { tagsReducer } from './slices/tags.slice';
 import api from '../api/api';
 
 const extraArgument = {
@@ -9,6 +10,7 @@ const extraArgument = {
 const store = configureStore({
   reducer: {
     posts: postsReducer,
+    tags: tagsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
