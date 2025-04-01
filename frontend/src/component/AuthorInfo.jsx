@@ -3,12 +3,12 @@ import React from 'react';
 
 function AuthorInfo({ avatar, author, date }) {
   return (
-    <CardHeader>
+    <CardHeader
       avatar={<Avatar src={avatar} alt={author} />}
       title={author}
       subheader={date}
       sx={{ paddingBottom: 0 }}
-    </CardHeader>
+    />
   );
 }
 
