@@ -20,7 +20,7 @@ function Post({ image, avatar, author, date, title, tags, views }) {
   return (
     <Card
       sx={{
-        maxWidth: '70%',
+        maxWidth: '100%',
         position: 'relative',
         '&:hover .post-actions': { opacity: 1 },
       }}
