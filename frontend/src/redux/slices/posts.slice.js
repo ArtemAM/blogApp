@@ -16,7 +16,7 @@ export const fetchPosts = createAsyncThunk(
   },
   {
     condition: (_, { getState }) => {
-      const { postsStatus, posts } = getState().posts;
+      const { postsStatus } = getState().posts;
       if (postsStatus === 'pending') {
         return false;
       }
