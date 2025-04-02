@@ -1,13 +1,28 @@
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLogin, loginSlice } from '../redux/slices/login.slice';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(loginSlice.selectors.selectIsLoginPending);
+  const isSuccess = useSelector(loginSlice.selectors.selectIsLoginSuccess);
+  const isRejected = useSelector(loginSlice.selectors.selectIsLoginRejected);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = () => {};
+  const onSubmit = (values) => {
+    dispatch(fetchLogin(values));
+  };
+  const handleInputChange = () => {
+    dispatch(loginSlice.actions.resetState());
+  };
+
+  if (isSuccess) navigate('/');
   return (
     <Box
       sx={{
@@ -43,6 +58,9 @@ function Login() {
               value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
               message: 'Invalid email address',
             },
+            onChange: () => {
+              handleInputChange();
+            },
           })}
           error={!!errors.email}
           helperText={errors.email ? errors.email.message : ''}
@@ -62,18 +80,29 @@ function Login() {
               value: 6,
               message: 'Password must be at least 6 characters long',
             },
+            onChange: () => {
+              handleInputChange();
+            },
           })}
           error={!!errors.password}
           helperText={errors.password ? errors.password.message : ''}
         />
 
         <Button
+          disabled={isLoading}
           type="submit"
           fullWidth
           variant="contained"
           sx={{ mt: 3 }}
-        ></Button>
+        >
+          {isLoading ? 'Loading...' : 'Login'}
+        </Button>
       </Box>
+      {isRejected && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          Неверные данные. Проверьте email и пароль.
+        </Alert>
+      )}
     </Box>
   );
 }
