@@ -1,15 +1,27 @@
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginSlice } from '../redux/slices/login.slice';
 
 function Header() {
-  const isAuth = false;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuth = useSelector(loginSlice.selectors.selectIsAuth);
+
+  const handleLogoutClick = () => {
+    const isConfirmed = window.confirm('Are you sure you want to logout?');
+    if (isConfirmed) {
+      dispatch(loginSlice.actions.logout());
+      navigate('/');
+    }
+  };
 
   const renderAuthButtons = () => (
     <Box sx={{ display: 'flex', gap: 1 }}>
       <Button color="inherit" variant="outlined" sx={{ marginRight: 1 }}>
         Create post
       </Button>
-      <Button color="inherit" variant="outlined">
+      <Button color="inherit" variant="outlined" onClick={handleLogoutClick}>
         Logout
       </Button>
     </Box>
@@ -17,11 +29,16 @@ function Header() {
 
   const renderGuestButtons = () => (
     <Box sx={{ display: 'flex', gap: 1 }}>
-      <Button color="inherit" variant="outlined" sx={{ marginRight: 1 }}>
-        Login
-      </Button>
       <Button color="inherit" variant="outlined">
-        Sign Up
+        Register
+      </Button>
+      <Button color="inherit" variant="outlined" sx={{ marginRight: 1 }}>
+        <Link
+          to={'/login'}
+          style={{ color: 'inherit', textDecoration: 'none' }}
+        >
+          Login
+        </Link>
       </Button>
     </Box>
   );
