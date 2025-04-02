@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import PostView from './pages/PostView';
 import Home from './pages/Home';
 import App from './App';
+import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: 'posts/:id',
         element: <PostView />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
     ],
   },
