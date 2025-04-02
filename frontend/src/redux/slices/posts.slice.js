@@ -2,19 +2,41 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   posts: [],
-  status: 'idle',
+  postsStatus: 'idle',
+  selectedPostStatus: 'idle',
+  selectedPost: null,
 };
 
 export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
-  async (_, thunkAPI) => {
-    const data = await thunkAPI.extra.api.getPosts();
+  async (_, { extra }) => {
+    const data = await extra.api.getPosts();
+    console.log('post');
     return data;
   },
   {
     condition: (_, { getState }) => {
-      const { posts } = getState().posts;
-      if (posts.length > 0) {
+      const { postsStatus, posts } = getState().posts;
+      if (postsStatus === 'pending') {
+        return false;
+      }
+    },
+  },
+);
+
+export const fetchPostById = createAsyncThunk(
+  'posts/fetchPostById',
+  async (id, { extra }) => {
+    const data = await extra.api.getPostById(id);
+    return data;
+  },
+  {
+    condition: (id, { getState }) => {
+      const { selectedPostStatus, selectedPost } = getState().posts;
+      if (
+        selectedPostStatus === 'pending' ||
+        (selectedPost && selectedPost.id === id)
+      ) {
         return false;
       }
     },
@@ -26,20 +48,33 @@ export const postsSlice = createSlice({
   initialState,
   selectors: {
     selectPosts: (state) => state.posts,
+    selectPostById: (state) => state.selectedPost,
     selectIsFetchPostsIdle: (state) => state.status === 'idle',
     selectIsFetchPostsPending: (state) => state.status === 'pending',
+    selectIsFetchPostByIdPending: (state) => state.status === 'pending',
+    selectIsFetchPostByIdIdle: (state) => state.status === 'idle',
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.pending, (state) => {
-      state.status = 'pending';
+      state.postsStatus = 'pending';
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      state.status = 'success';
+      state.postsStatus = 'success';
       state.posts = action.payload;
     });
     builder.addCase(fetchPosts.rejected, (state) => {
-      state.status = 'failed';
+      state.postsStatus = 'failed';
+    });
+    builder.addCase(fetchPostById.pending, (state) => {
+      state.selectedPostStatus = 'pending';
+    });
+    builder.addCase(fetchPostById.fulfilled, (state, action) => {
+      state.selectedPostStatus = 'success';
+      state.selectedPost = action.payload;
+    });
+    builder.addCase(fetchPostById.rejected, (state) => {
+      state.selectedPostStatus = 'failed';
     });
   },
 });
