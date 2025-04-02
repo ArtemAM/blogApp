@@ -33,6 +33,15 @@ const api = {
       throw error;
     }
   },
+  login: async (userData) => {
+    try {
+      const response = await instance.post('auth/login', userData);
+      return response.data;
+    } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
