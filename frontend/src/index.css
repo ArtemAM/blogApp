@@ -1,0 +1,17 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link:hover {
+  color: black; /* Цвет при наведении */
+}
+
+.link-secondary {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-secondary:hover {
+  color: rgb(0, 157, 255); /* Цвет при наведении */
+}
