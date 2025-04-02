@@ -13,8 +13,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AuthorInfo from './AuthorInfo';
+import { Link } from 'react-router-dom';
 
-function Post({ image, avatar, author, date, title, tags, views }) {
+function Post({ id, image, avatar, author, date, title, tags, views }) {
   const handleDelete = () => {};
   const handleEdit = () => {};
   return (
@@ -29,7 +30,9 @@ function Post({ image, avatar, author, date, title, tags, views }) {
       <AuthorInfo avatar={avatar} author={author} date={date} />
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          {title}
+          <Link to={`posts/${id}`} className="link-secondary">
+            {title}
+          </Link>
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
           {tags.map((tag) => (
