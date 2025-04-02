@@ -1,4 +1,5 @@
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const isAuth = false;
@@ -28,8 +29,15 @@ function Header() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Blog
+        <Typography
+          variant="h6"
+          sx={{
+            flexGrow: 1,
+          }}
+        >
+          <Link to="/" className="link">
+            Blog
+          </Link>
         </Typography>
         {isAuth ? renderAuthButtons() : renderGuestButtons()}
       </Toolbar>
