@@ -33,6 +33,7 @@ function Home() {
             : posts.map((post) => (
                 <Post
                   key={post.id}
+                  id={post.id}
                   image={post.imageUrl || '../../public/post.png'}
                   title={post.title}
                   text={post.text}
