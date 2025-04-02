@@ -15,8 +15,12 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (values) => {
-    dispatch(fetchLogin(values));
+  const onSubmit = async (values) => {
+    const result = await dispatch(fetchLogin(values));
+    const token = result.payload.token;
+    if (token) {
+      localStorage.setItem('token', token);
+    }
   };
   const handleInputChange = () => {
     dispatch(loginSlice.actions.resetState());
