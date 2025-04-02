@@ -24,6 +24,15 @@ const api = {
       throw error;
     }
   },
+  getPostById: async (id) => {
+    try {
+      const response = await instance.get(`/posts/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching post:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
