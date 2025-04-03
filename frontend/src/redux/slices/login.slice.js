@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { fetchRegister } from './register.slice';
 
 const initialState = {
   userData: null,
@@ -70,6 +71,10 @@ export const loginSlice = createSlice({
       })
       .addCase(fetchAuthUser.rejected, (state) => {
         state.status = 'idle';
+      })
+      .addCase(fetchRegister.fulfilled, (state, action) => {
+        state.status = 'success';
+        state.userData = action.payload;
       });
   },
 });
