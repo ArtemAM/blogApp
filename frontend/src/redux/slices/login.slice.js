@@ -13,6 +13,22 @@ export const fetchLogin = createAsyncThunk(
   },
 );
 
+export const fetchAuthUser = createAsyncThunk(
+  'login/fetchAuth',
+  async (_, { extra }) => {
+    const data = await extra.api.getAuthUser();
+    return data;
+  },
+  {
+    condition: (_, { getState }) => {
+      const { login } = getState();
+      if (login.status === 'pending' || login.userData) {
+        return false;
+      }
+    },
+  },
+);
+
 export const loginSlice = createSlice({
   name: 'login',
   initialState,
@@ -26,6 +42,7 @@ export const loginSlice = createSlice({
   reducers: {
     resetState: (state) => {
       state.status = 'idle';
+      state.userData = null;
     },
     logout: (state) => {
       state.userData = null;
@@ -43,6 +60,16 @@ export const loginSlice = createSlice({
       })
       .addCase(fetchLogin.rejected, (state) => {
         state.status = 'rejected';
+      })
+      .addCase(fetchAuthUser.pending, (state) => {
+        state.status = 'pending';
+      })
+      .addCase(fetchAuthUser.fulfilled, (state, action) => {
+        state.status = 'success';
+        state.userData = action.payload;
+      })
+      .addCase(fetchAuthUser.rejected, (state) => {
+        state.status = 'idle';
       });
   },
 });
