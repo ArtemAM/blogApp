@@ -31,9 +31,14 @@ router.post("/login", loginValidation, async (req, res) => {
 		// Генерация токена
 		const token = generateToken({ id: user.id });
 
-		// Возвращаем токен
+		// Возвращаем токен и данные пользователя
 		res.status(200).json({
 			message: "Login successful",
+			id: user.id,
+			fullName: user.fullName,
+			email: user.email,
+			avatarUrl: user.avatarUrl,
+			createdAt: user.createdAt,
 			token,
 		});
 	} catch (err) {
