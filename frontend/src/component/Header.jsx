@@ -20,7 +20,12 @@ function Header() {
   const renderAuthButtons = () => (
     <Box sx={{ display: 'flex', gap: 1 }}>
       <Button color="inherit" variant="outlined" sx={{ marginRight: 1 }}>
-        Create post
+        <Link
+          to={'/create-post'}
+          style={{ color: 'inherit', textDecoration: 'none' }}
+        >
+          Create post
+        </Link>
       </Button>
       <Button color="inherit" variant="outlined" onClick={handleLogoutClick}>
         Logout
