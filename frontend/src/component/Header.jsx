@@ -31,7 +31,12 @@ function Header() {
   const renderGuestButtons = () => (
     <Box sx={{ display: 'flex', gap: 1 }}>
       <Button color="inherit" variant="outlined">
-        Register
+        <Link
+          to={'/register'}
+          style={{ color: 'inherit', textDecoration: 'none' }}
+        >
+          Register
+        </Link>
       </Button>
       <Button color="inherit" variant="outlined" sx={{ marginRight: 1 }}>
         <Link
