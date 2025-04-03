@@ -12,7 +12,6 @@ router.post("/register", registerValidation, async (req, res) => {
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });
 	}
-
 	const { fullName, email, password, avatarUrl } = req.body;
 
 	try {
@@ -26,15 +25,19 @@ router.post("/register", registerValidation, async (req, res) => {
 		const passwordHash = await bcrypt.hash(password, 10);
 
 		// Создание пользователя
-		const userId = await createUser(fullName, email, passwordHash, avatarUrl);
+		const newUser = await createUser(fullName, email, passwordHash, avatarUrl);
 
 		// Генерация токена
-		const token = generateToken({ id: userId });
+		const token = generateToken({ id: newUser.id });
 
 		// Возвращаем ответ с токеном
 		res.status(201).json({
 			message: "User registered successfully",
-			userId,
+			id: newUser.id,
+			fullName: newUser.fullName,
+			email: newUser.email,
+			avatarUrl: newUser.avatarUrl,
+			createdAt: newUser.createdAt,
 			token,
 		});
 	} catch (err) {
