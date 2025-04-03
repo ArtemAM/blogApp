@@ -22,6 +22,7 @@ import 'easymde/dist/easymde.min.css';
 import { useSelector } from 'react-redux';
 import { loginSlice } from '../redux/slices/login.slice';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/api';
 
 function CreatePost() {
   const isAuth = useSelector(loginSlice.selectors.selectIsAuth);
@@ -32,6 +33,7 @@ function CreatePost() {
   const [currentTag, setCurrentTag] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -71,15 +73,30 @@ function CreatePost() {
     setContent(value);
   }, []);
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    tags.forEach((tag) => formData.append('tags', tag));
-    if (file) formData.append('image', file);
-
-    console.log('Отправка данных:', { title, content, tags, file });
-    // Здесь будет запрос на API
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      const postData = {
+        title,
+        text: content,
+        tags,
+      };
+      const { postId } = await api.createPost(postData);
+      navigate(`/posts/${postId}`);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response) {
+        console.error('Ошибка сервера:', error.response.data);
+        alert(`Ошибка: ${error.response.data.errors[0].msg}`);
+      } else if (error.request) {
+        console.error('Нет ответа от сервера');
+        alert('Сервер не отвечает');
+      } else {
+        console.error('Ошибка:', error.response.data.errors[0].msg);
+      }
+      throw error;
+    }
   };
 
   const handleCancel = () => {
@@ -94,71 +111,79 @@ function CreatePost() {
       <Typography variant="h5" gutterBottom>
         Create new post
       </Typography>
-      <TextField
-        label="Title"
-        variant="standard"
-        fullWidth
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-      <TextField
-        label="Tags"
-        variant="standard"
-        fullWidth
-        value={currentTag}
-        onChange={(e) => setCurrentTag(e.target.value)}
-        onKeyDown={handleTagAdd}
-        sx={{ mb: 1 }}
-        helperText="Press Enter to add a tag"
-      />
-      <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap' }}>
-        {tags.map((tag) => (
-          <Chip
-            key={tag}
-            label={tag}
-            onDelete={() => handleTagDelete(tag)}
-            sx={{ mb: 1 }}
-          />
-        ))}
-      </Stack>
-      <Box sx={{ mb: 2 }}>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-          accept="image/*"
+      <Box type="form">
+        <TextField
+          label="Title"
+          variant="standard"
+          fullWidth
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{ mb: 2 }}
         />
-        <Button
-          startIcon={<CloudUpload />}
-          variant="outlined"
-          onClick={() => fileInputRef.current.click()}
-        >
-          {file ? file.name : 'Upload image'}
-        </Button>
-        {file && (
-          <IconButton onClick={() => setFile(null)} sx={{ ml: 1 }}>
-            <Cancel />
-          </IconButton>
-        )}
+        <TextField
+          label="Tags"
+          variant="standard"
+          fullWidth
+          value={currentTag}
+          onChange={(e) => setCurrentTag(e.target.value)}
+          onKeyDown={handleTagAdd}
+          sx={{ mb: 1 }}
+          helperText="Press Enter to add a tag"
+        />
+        <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap' }}>
+          {tags.map((tag) => (
+            <Chip
+              key={tag}
+              label={tag}
+              onDelete={() => handleTagDelete(tag)}
+              sx={{ mb: 1 }}
+            />
+          ))}
+        </Stack>
+        <Box sx={{ mb: 2 }}>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+            accept="image/*"
+          />
+          <Button
+            startIcon={<CloudUpload />}
+            variant="outlined"
+            onClick={() => fileInputRef.current.click()}
+          >
+            {file ? file.name : 'Upload image'}
+          </Button>
+          {file && (
+            <IconButton onClick={() => setFile(null)} sx={{ ml: 1 }}>
+              <Cancel />
+            </IconButton>
+          )}
+        </Box>
+        <Divider sx={{ mb: 2 }} />
+        <SimpleMDE
+          value={content}
+          onChange={handleContentChange}
+          options={options}
+        />
       </Box>
-      <Divider sx={{ mb: 2 }} />
-      <SimpleMDE
-        value={content}
-        onChange={handleContentChange}
-        options={options}
-      />
       <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
         <Button
+          type="submit"
           variant="contained"
           startIcon={<Send />}
           onClick={handleSubmit}
-          disabled={!title || !content}
+          disabled={!title || !content || isLoading}
         >
-          Publish
+          {isLoading ? 'Publishing...' : 'Publish'}
         </Button>
-        <Button variant="outlined" endIcon={<Cancel />} onClick={handleCancel}>
+        <Button
+          disabled={isLoading}
+          variant="outlined"
+          endIcon={<Cancel />}
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
       </Stack>
