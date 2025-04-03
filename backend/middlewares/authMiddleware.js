@@ -19,6 +19,7 @@ export const authMiddleware = (req, res, next) => {
 		// Проверяем токен и извлекаем данные пользователя
 		const decoded = jwt.verify(token, SECRET_KEY);
 		req.user = decoded; // Сохраняем данные пользователя в объекте запроса
+		req.user.token = token;
 		next();
 	} catch (err) {
 		return res.status(401).json({ error: "Invalid or expired token" });
