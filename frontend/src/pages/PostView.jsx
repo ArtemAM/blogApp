@@ -16,14 +16,17 @@ function PostView() {
   useEffect(() => {
     dispatch(fetchPostById(id));
   }, [dispatch, id]);
-
   if (isLoading && !post) return <div>Loading...</div>;
   if (!post) return <div>Post not found</div>;
   return (
     <Box sx={{ maxWidth: '800px', margin: '0 auto', padding: 2 }}>
       <Box
         component="img"
-        src={post.image || '../../public/post.png'}
+        src={
+          post.imageUrl
+            ? `http://localhost:8000${post.imageUrl}`
+            : '../../public/post.png'
+        }
         alt={post.title}
         sx={{
           width: '100%',

@@ -34,7 +34,11 @@ function Home() {
                 <Post
                   key={post.id}
                   id={post.id}
-                  image={post.imageUrl || '../../public/post.png'}
+                  image={
+                    post.imageUrl
+                      ? `http://localhost:8000${post.imageUrl}`
+                      : '../../public/post.png'
+                  }
                   title={post.title}
                   text={post.text}
                   author={post.author}
