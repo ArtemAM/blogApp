@@ -69,6 +69,15 @@ const api = {
       throw error;
     }
   },
+  register: async (userData) => {
+    try {
+      const response = await instance.post('auth/register', userData);
+      return response.data;
+    } catch (error) {
+      console.error('Error registering user:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
