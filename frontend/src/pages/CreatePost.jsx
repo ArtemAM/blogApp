@@ -34,6 +34,7 @@ function CreatePost() {
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [image, setImage] = useState(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -63,9 +64,19 @@ function CreatePost() {
     setTags(tags.filter((tag) => tag !== tagToDelete));
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
       setFile(e.target.files[0]);
+    }
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      const { imageUrl } = await api.uploadImage(formData);
+      setImage(imageUrl);
+    } catch (error) {
+      console.warn('Error uploading image:', error);
+      alert('Error uploading image');
     }
   };
 
@@ -104,6 +115,12 @@ function CreatePost() {
     setContent('');
     setTags([]);
     setFile(null);
+    setImage(null);
+  };
+
+  const handleCancelImage = () => {
+    setFile(null);
+    setImage(null);
   };
 
   return (
@@ -111,6 +128,15 @@ function CreatePost() {
       <Typography variant="h5" gutterBottom>
         Create new post
       </Typography>
+      {image && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, mt: 2 }}>
+          <img
+            src={`http://localhost:8000${image}`}
+            alt="Uploaded"
+            height="300px"
+          />
+        </Box>
+      )}
       <Box type="form">
         <TextField
           label="Title"
@@ -156,7 +182,7 @@ function CreatePost() {
             {file ? file.name : 'Upload image'}
           </Button>
           {file && (
-            <IconButton onClick={() => setFile(null)} sx={{ ml: 1 }}>
+            <IconButton onClick={handleCancelImage} sx={{ ml: 1 }}>
               <Cancel />
             </IconButton>
           )}
