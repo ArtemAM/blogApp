@@ -50,6 +50,15 @@ const api = {
       throw error;
     }
   },
+  getAuthUser: async () => {
+    try {
+      const response = await instance.get('/user');
+      return response.data;
+    } catch (error) {
+      console.error('Not auth:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
