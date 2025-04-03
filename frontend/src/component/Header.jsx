@@ -13,6 +13,7 @@ function Header() {
     if (isConfirmed) {
       dispatch(loginSlice.actions.logout());
       navigate('/');
+      localStorage.removeItem('token');
     }
   };
 
