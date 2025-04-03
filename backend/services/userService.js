@@ -22,7 +22,15 @@ export const createUser = (fullName, email, passwordHash, avatarUrl) => {
 				if (err) {
 					return reject(err);
 				}
-				resolve(this.lastID); // Возвращаем ID нового пользователя
+
+				// Выполняем дополнительный запрос для получения данных пользователя
+				const selectQuery = `SELECT * FROM users WHERE id = ?`;
+				db.get(selectQuery, [this.lastID], (err, user) => {
+					if (err) {
+						return reject(err);
+					}
+					resolve(user); // Возвращаем данные нового пользователя
+				});
 			}
 		);
 	});
