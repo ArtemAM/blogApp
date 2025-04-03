@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Typography, Chip } from '@mui/material';
+import { Box, Typography, Chip, Paper } from '@mui/material';
 import AuthorInfo from '../component/AuthorInfo';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useParams } from 'react-router-dom';
@@ -19,7 +19,7 @@ function PostView() {
   if (isLoading && !post) return <div>Loading...</div>;
   if (!post) return <div>Post not found</div>;
   return (
-    <Box sx={{ maxWidth: '800px', margin: '0 auto', padding: 2 }}>
+    <Paper elevation={3} sx={{ maxWidth: '800px', mx: 'auto', mt: 4 }}>
       <Box
         component="img"
         src={
@@ -58,7 +58,7 @@ function PostView() {
           <VisibilityIcon fontSize="small" />
         </Box>
       </Box>
-    </Box>
+    </Paper>
   );
 }
 
