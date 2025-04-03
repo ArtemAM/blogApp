@@ -1,4 +1,10 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from 'react';
 import {
   Box,
   Button,
@@ -13,14 +19,24 @@ import {
 import { CloudUpload, Cancel, Send } from '@mui/icons-material';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
+import { useSelector } from 'react-redux';
+import { loginSlice } from '../redux/slices/login.slice';
+import { useNavigate } from 'react-router-dom';
 
 function CreatePost() {
+  const isAuth = useSelector(loginSlice.selectors.selectIsAuth);
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!localStorage.getItem('token') && !isAuth) navigate('/');
+  }, [isAuth, navigate]);
 
   const options = useMemo(
     () => ({
