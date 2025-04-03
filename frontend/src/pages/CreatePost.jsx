@@ -91,6 +91,7 @@ function CreatePost() {
         title,
         text: content,
         tags,
+        imageUrl: image,
       };
       const { postId } = await api.createPost(postData);
       navigate(`/posts/${postId}`);
