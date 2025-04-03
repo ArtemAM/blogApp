@@ -20,6 +20,6 @@ export const registerValidation = [
 export const postValidation = [
 	body("title").notEmpty().withMessage("Title is required").isString(),
 	body("text").notEmpty().withMessage("Text is required").isString(),
-	body("tags").optional().isString(),
+	body("tags").optional().isArray(),
 	body("imageUrl").optional().isString(),
 ];
