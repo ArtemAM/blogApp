@@ -7,9 +7,7 @@ const router = Router();
 router.get("/", async (req, res) => {
 	try {
 		// Получаем список тегов из базы данных
-		console.log("fetch");
 		const tags = await getTags();
-		console.log(tags);
 
 		// Если теги не найдены, возвращаем пустой массив
 		if (!tags || tags.length === 0) {
