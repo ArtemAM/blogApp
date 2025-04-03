@@ -1,15 +1,30 @@
-import React from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Box, TextField, Button, Typography, Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { fetchRegister, registerSlice } from '../redux/slices/register.slice';
+import { loginSlice } from '../redux/slices/login.slice';
 
 function Register() {
+  const dispath = useDispatch();
+  const navigate = useNavigate();
+  const isLoading = useSelector(registerSlice.selectors.selectIsFetchPending);
+  const isAuth = useSelector(loginSlice.selectors.selectIsAuth);
+  const error = useSelector(registerSlice.selectors.selectError);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm();
 
-  const onSubmit = (values) => {};
+  const onSubmit = (values) => {
+    dispath(fetchRegister(values));
+  };
+
+  useEffect(() => {
+    if (isAuth) navigate('/');
+  }, [isAuth, navigate]);
 
   return (
     <Box
@@ -25,6 +40,11 @@ function Register() {
       <Typography component="h1" variant="h5">
         Register
       </Typography>
+      {error && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
+      )}
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -83,8 +103,14 @@ function Register() {
           error={!!errors.password}
           helperText={errors.password ? errors.password.message : ''}
         />
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-          Register
+        <Button
+          type="submit"
+          disabled={!isValid || isLoading}
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3 }}
+        >
+          {isLoading ? 'Registration...' : 'Register'}
         </Button>
       </Box>
     </Box>
