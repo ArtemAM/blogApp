@@ -17,7 +17,6 @@ function Home() {
   const isLoadingPosts = useSelector(
     postsSlice.selectors.selectIsFetchPostsPending,
   );
-  const tags = useSelector(tagsSlice.selectors.selectTags);
   const isLoadingTags = useSelector(
     tagsSlice.selectors.selectIsFetchTagsPending,
   );
@@ -67,7 +66,7 @@ function Home() {
         </Box>
       </Grid>
       <Grid size={3} sx={{ alignSelf: 'flex-start' }}>
-        {isLoadingTags ? <TagsSkeleton /> : <Tags tags={tags} />}
+        {isLoadingTags ? <TagsSkeleton /> : <Tags />}
       </Grid>
     </Grid>
   );

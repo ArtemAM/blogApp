@@ -10,8 +10,11 @@ import {
   ListItemButton,
 } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
+import { useSelector } from 'react-redux';
+import { tagsSlice } from '../redux/slices/tags.slice';
 
-function Tags({ tags }) {
+function Tags() {
+  const tags = useSelector(tagsSlice.selectors.selectTags);
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
