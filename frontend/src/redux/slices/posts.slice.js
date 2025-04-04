@@ -70,7 +70,7 @@ export const postsSlice = createSlice({
           .sort((a, b) => {
             if (sortType === 'new') {
               return new Date(b.createdAt) - new Date(a.createdAt);
-            } else if (sortType === 'views') {
+            } else if (sortType === 'popular') {
               return b.viewsCount - a.viewsCount;
             }
           });
