@@ -43,6 +43,14 @@ export const fetchPostById = createAsyncThunk(
   },
 );
 
+export const fetchDeletePost = createAsyncThunk(
+  'posts/fetchDeletePost',
+  async (id, { extra }) => {
+    const data = await extra.api.deletePost(id);
+    return data;
+  },
+);
+
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
@@ -75,6 +83,9 @@ export const postsSlice = createSlice({
     });
     builder.addCase(fetchPostById.rejected, (state) => {
       state.selectedPostStatus = 'failed';
+    });
+    builder.addCase(fetchDeletePost.fulfilled, (state, action) => {
+      state.posts = state.posts.filter((post) => post.id !== action.meta.arg);
     });
   },
 });
