@@ -8,6 +8,7 @@ import { postsSlice } from '../redux/slices/posts.slice';
 import { tagsSlice } from '../redux/slices/tags.slice';
 import TagsSkeleton from '../component/TagsSkeleton';
 import { loginSlice } from '../redux/slices/login.slice';
+import { API_URL } from '../config';
 
 function Home() {
   const [sortType, setSortType] = useState('new');
@@ -52,7 +53,7 @@ function Home() {
                   id={post.id}
                   image={
                     post.imageUrl
-                      ? `http://localhost:8000${post.imageUrl}`
+                      ? `${API_URL}${post.imageUrl}`
                       : '../../public/post.png'
                   }
                   title={post.title}
