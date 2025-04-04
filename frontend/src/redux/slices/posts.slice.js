@@ -9,7 +9,6 @@ const initialState = {
   ids: [],
   postsStatus: 'idle',
   selectedPostStatus: 'idle',
-  selectedPost: null,
 };
 
 export const fetchPosts = createAsyncThunk(
@@ -75,11 +74,10 @@ export const postsSlice = createSlice({
           });
       },
     ),
-    selectPostById: (state) => state.selectedPost,
+    selectPostById: (state, id) => state.posts[id],
     selectIsFetchPostsIdle: (state) => state.status === 'idle',
     selectIsFetchPostsPending: (state) => state.status === 'pending',
     selectIsFetchPostByIdPending: (state) => state.status === 'pending',
-    selectIsFetchPostByIdIdle: (state) => state.status === 'idle',
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -88,7 +86,6 @@ export const postsSlice = createSlice({
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       const posts = action.payload;
-      console.log(action.payload);
       state.posts = posts.reduce((acc, post) => {
         acc[post.id] = post;
         return acc;
@@ -103,8 +100,9 @@ export const postsSlice = createSlice({
       state.selectedPostStatus = 'pending';
     });
     builder.addCase(fetchPostById.fulfilled, (state, action) => {
+      const data = action.payload;
       state.selectedPostStatus = 'success';
-      state.selectedPost = action.payload;
+      state.posts[data.id] = data;
     });
     builder.addCase(fetchPostById.rejected, (state) => {
       state.selectedPostStatus = 'failed';
