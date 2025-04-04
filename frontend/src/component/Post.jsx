@@ -39,7 +39,17 @@ function PostActions({ onEdit, onDelete }) {
   );
 }
 
-function Post({ id, image, avatar, author, date, title, tags, views }) {
+function Post({
+  id,
+  image,
+  avatar,
+  author,
+  date,
+  title,
+  tags,
+  views,
+  isOwner,
+}) {
   const handleDelete = () => {};
   const handleEdit = () => {};
   return (
@@ -72,6 +82,7 @@ function Post({ id, image, avatar, author, date, title, tags, views }) {
           <VisibilityIcon fontSize="small" />
         </Typography>
       </CardContent>
+      {isOwner && <PostActions onEdit={handleEdit} onDelete={handleDelete} />}
     </Card>
   );
 }
