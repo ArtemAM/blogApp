@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { postsSlice } from '../redux/slices/posts.slice';
 import { tagsSlice } from '../redux/slices/tags.slice';
 import TagsSkeleton from '../component/TagsSkeleton';
-import { loginSlice } from '../redux/slices/login.slice';
 import { API_URL } from '../config';
 
 function Home() {
@@ -15,7 +14,6 @@ function Home() {
   const sortedPosts = useSelector((state) =>
     postsSlice.selectors.selectSortedPosts(state, sortType),
   );
-  const userData = useSelector(loginSlice.selectors.selectUserData);
   const isLoadingPosts = useSelector(
     postsSlice.selectors.selectIsFetchPostsPending,
   );
@@ -63,7 +61,7 @@ function Home() {
                   tags={post.tags}
                   views={post.viewsCount}
                   avatar={post.avatar}
-                  isOwner={post.authorId === userData?.id ? true : false}
+                  authorId={post.authorId}
                 />
               ))}
         </Box>

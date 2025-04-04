@@ -14,8 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AuthorInfo from './AuthorInfo';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeletePost } from '../redux/slices/posts.slice';
+import { loginSlice } from '../redux/slices/login.slice';
 
 function PostActions({ id }) {
   const dispatch = useDispatch();
@@ -66,8 +67,10 @@ function Post({
   title,
   tags,
   views,
-  isOwner,
+  authorId,
 }) {
+  const userData = useSelector(loginSlice.selectors.selectUserData);
+  const isOwner = authorId === userData?.id;
   return (
     <Card
       sx={{
