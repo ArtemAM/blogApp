@@ -126,7 +126,7 @@ router.put("/:id", authMiddleware, postValidation, async (req, res) => {
 		}
 
 		// Возвращаем успешный ответ
-		res.status(200).json({ message: "Post updated successfully" });
+		res.status(200).json({ message: "Post updated successfully", postId });
 	} catch (err) {
 		console.error("Error updating post:", err);
 		res.status(500).json({ error: "Failed to update post" });
