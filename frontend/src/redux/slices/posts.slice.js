@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  posts: [],
+  posts: {},
+  ids: [],
   postsStatus: 'idle',
   selectedPostStatus: 'idle',
   selectedPost: null,
@@ -68,8 +69,14 @@ export const postsSlice = createSlice({
       state.postsStatus = 'pending';
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
+      const posts = action.payload;
+      console.log(action.payload);
+      state.posts = posts.reduce((acc, post) => {
+        acc[post.id] = post;
+        return acc;
+      }, {});
+      state.ids = posts.map((post) => post.id);
       state.postsStatus = 'success';
-      state.posts = action.payload;
     });
     builder.addCase(fetchPosts.rejected, (state) => {
       state.postsStatus = 'failed';
