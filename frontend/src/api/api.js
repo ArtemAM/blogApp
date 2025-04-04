@@ -50,6 +50,15 @@ const api = {
       throw error;
     }
   },
+  updatePost: async (id, postData) => {
+    try {
+      const response = await instance.patch(`/posts/${id}`, postData);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating post:', error);
+      throw error;
+    }
+  },
   login: async (userData) => {
     try {
       const response = await instance.post('auth/login', userData);
