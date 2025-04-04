@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, postsSlice } from '../redux/slices/posts.slice';
 import { fetchTags, tagsSlice } from '../redux/slices/tags.slice';
 import TagsSkeleton from '../component/TagsSkeleton';
+import { loginSlice } from '../redux/slices/login.slice';
 
 function Home() {
   const dispatch = useDispatch();
   const posts = useSelector(postsSlice.selectors.selectPosts);
+  const userData = useSelector(loginSlice.selectors.selectUserData);
   const isLoadingPosts = useSelector(
     postsSlice.selectors.selectIsFetchPostsPending,
   );
@@ -46,6 +48,7 @@ function Home() {
                   tags={post.tags}
                   views={post.viewsCount}
                   avatar={post.avatar}
+                  isOwner={post.authorId === userData?.id ? true : false}
                 />
               ))}
         </Box>
