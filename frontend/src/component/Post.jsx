@@ -30,7 +30,9 @@ function PostActions({ id }) {
       console.error('Error deleting post:', error);
     }
   };
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    navigate(`/posts/${id}/edit`);
+  };
 
   return (
     <CardActions
