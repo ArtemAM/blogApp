@@ -16,7 +16,6 @@ export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
   async (_, { extra }) => {
     const data = await extra.api.getPosts();
-    console.log('post');
     return data;
   },
   {
