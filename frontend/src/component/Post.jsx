@@ -15,6 +15,30 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AuthorInfo from './AuthorInfo';
 import { Link } from 'react-router-dom';
 
+function PostActions({ onEdit, onDelete }) {
+  return (
+    <CardActions
+      sx={{
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        opacity: 0,
+        transition: 'opacity 0.3s',
+        '&:hover': {
+          opacity: 1,
+        },
+      }}
+    >
+      <IconButton color="primary" onClick={onEdit}>
+        <EditIcon />
+      </IconButton>
+      <IconButton color="error" onClick={onDelete}>
+        <DeleteIcon />
+      </IconButton>
+    </CardActions>
+  );
+}
+
 function Post({ id, image, avatar, author, date, title, tags, views }) {
   const handleDelete = () => {};
   const handleEdit = () => {};
@@ -48,23 +72,6 @@ function Post({ id, image, avatar, author, date, title, tags, views }) {
           <VisibilityIcon fontSize="small" />
         </Typography>
       </CardContent>
-      <CardActions
-        className="post-actions"
-        sx={{
-          position: 'absolute',
-          top: 8,
-          right: 8,
-          opacity: 0,
-          transition: 'opacity 0.3s',
-        }}
-      >
-        <IconButton color="primary" onClick={handleEdit}>
-          <EditIcon />
-        </IconButton>
-        <IconButton color="error" onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
-      </CardActions>
     </Card>
   );
 }
