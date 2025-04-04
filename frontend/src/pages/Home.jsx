@@ -41,9 +41,7 @@ function Home() {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {isLoadingPosts
-            ? Array.from(new Array(5)).map((_, index) => (
-                <PostSkeleton key={index} />
-              ))
+            ? [...Array(5)].map((_, index) => <PostSkeleton key={index} />)
             : sortedPosts.map((post) => (
                 <Post
                   key={post.id}
