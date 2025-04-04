@@ -35,7 +35,11 @@ function PostView() {
           borderRadius: 2,
         }}
       />
-      <AuthorInfo avatar={post.avatar} author={post.author} date={post.date} />
+      <AuthorInfo
+        avatar={post.avatar}
+        author={post.author}
+        date={post.createdAt}
+      />
       <Box sx={{ padding: 2 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           {post.title}
