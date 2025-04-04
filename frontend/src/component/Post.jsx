@@ -37,6 +37,7 @@ function PostActions({ id }) {
 
   return (
     <CardActions
+      className="post-actions"
       sx={{
         position: 'absolute',
         top: 8,
