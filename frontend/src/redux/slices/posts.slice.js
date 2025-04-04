@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from '@reduxjs/toolkit';
 
 const initialState = {
   posts: {},
@@ -56,7 +60,22 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   selectors: {
-    selectPosts: (state) => state.posts,
+    selectSortedPosts: createSelector(
+      (state) => state.posts,
+      (state) => state.ids,
+      (_, sortType) => sortType,
+      (posts, ids, sortType) => {
+        return ids
+          .map((id) => posts[id])
+          .sort((a, b) => {
+            if (sortType === 'new') {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            } else if (sortType === 'views') {
+              return b.viewsCount - a.viewsCount;
+            }
+          });
+      },
+    ),
     selectPostById: (state) => state.selectedPost,
     selectIsFetchPostsIdle: (state) => state.status === 'idle',
     selectIsFetchPostsPending: (state) => state.status === 'pending',
