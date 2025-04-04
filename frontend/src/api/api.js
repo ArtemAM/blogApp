@@ -52,7 +52,7 @@ const api = {
   },
   updatePost: async (id, postData) => {
     try {
-      const response = await instance.patch(`/posts/${id}`, postData);
+      const response = await instance.put(`/posts/${id}`, postData);
       return response.data;
     } catch (error) {
       console.error('Error updating post:', error);
