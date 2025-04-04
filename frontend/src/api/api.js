@@ -41,6 +41,15 @@ const api = {
       throw error;
     }
   },
+  deletePost: async (id) => {
+    try {
+      const response = await instance.delete(`/posts/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      throw error;
+    }
+  },
   login: async (userData) => {
     try {
       const response = await instance.post('auth/login', userData);
