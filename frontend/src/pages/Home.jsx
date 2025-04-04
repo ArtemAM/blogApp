@@ -1,4 +1,4 @@
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, ButtonGroup, Button } from '@mui/material';
 import Tags from '../component/Tags';
 import Post from '../component/Post';
 import PostSkeleton from '../component/PostSkeleton';
@@ -30,6 +30,22 @@ function Home() {
   return (
     <Grid container spacing={2} alignItems="flex-start" sx={{ paddingTop: 4 }}>
       <Grid size={9}>
+        <Box sx={{ marginBottom: 2 }}>
+          <ButtonGroup aria-label="sort buttons">
+            <Button
+              onClick={() => setSortType('new')}
+              variant={sortType === 'new' ? 'contained' : 'text'}
+            >
+              Newest
+            </Button>
+            <Button
+              onClick={() => setSortType('popular')}
+              variant={sortType === 'popular' ? 'contained' : 'text'}
+            >
+              Popular
+            </Button>
+          </ButtonGroup>
+        </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {isLoadingPosts
             ? Array.from(new Array(5)).map((_, index) => (
