@@ -12,7 +12,9 @@ function PostView() {
   const isLoading = useSelector(
     postsSlice.selectors.selectIsFetchPostByIdPending,
   );
-  const post = useSelector(postsSlice.selectors.selectPostById);
+  const post = useSelector((state) =>
+    postsSlice.selectors.selectPostById(state, id),
+  );
   useEffect(() => {
     dispatch(fetchPostById(id));
   }, [dispatch, id]);
