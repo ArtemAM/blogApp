@@ -5,6 +5,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPostById, postsSlice } from '../redux/slices/posts.slice';
+import { API_URL } from '../config';
 
 function PostView() {
   const { id } = useParams();
@@ -25,9 +26,7 @@ function PostView() {
       <Box
         component="img"
         src={
-          post.imageUrl
-            ? `http://localhost:8000${post.imageUrl}`
-            : '../../public/post.png'
+          post.imageUrl ? `${API_URL}${post.imageUrl}` : '../../public/post.png'
         }
         alt={post.title}
         sx={{
