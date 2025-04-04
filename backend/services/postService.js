@@ -27,7 +27,7 @@ export const getAllPosts = () => {
 	return new Promise((resolve, reject) => {
 		const query = `
           SELECT posts.id, posts.title, posts.text, posts.tags, posts.imageUrl, posts.viewsCount, posts.createdAt,
-                 users.fullName AS author
+                 users.id AS authorId, users.fullName AS author
           FROM posts
           JOIN users ON posts.user = users.id
       `;
