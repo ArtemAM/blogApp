@@ -13,9 +13,25 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AuthorInfo from './AuthorInfo';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchDeletePost } from '../redux/slices/posts.slice';
 
-function PostActions({ onEdit, onDelete }) {
+function PostActions({ id }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleDelete = () => {
+    try {
+      if (window.confirm('Are you sure you want to delete this post?')) {
+        dispatch(fetchDeletePost(id));
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+  const handleEdit = () => {};
+
   return (
     <CardActions
       sx={{
@@ -29,10 +45,10 @@ function PostActions({ onEdit, onDelete }) {
         },
       }}
     >
-      <IconButton color="primary" onClick={onEdit}>
+      <IconButton color="primary" onClick={handleEdit}>
         <EditIcon />
       </IconButton>
-      <IconButton color="error" onClick={onDelete}>
+      <IconButton color="error" onClick={handleDelete}>
         <DeleteIcon />
       </IconButton>
     </CardActions>
@@ -50,8 +66,6 @@ function Post({
   views,
   isOwner,
 }) {
-  const handleDelete = () => {};
-  const handleEdit = () => {};
   return (
     <Card
       sx={{
@@ -82,7 +96,7 @@ function Post({
           <VisibilityIcon fontSize="small" />
         </Typography>
       </CardContent>
-      {isOwner && <PostActions onEdit={handleEdit} onDelete={handleDelete} />}
+      {isOwner && <PostActions id={id} />}
     </Card>
   );
 }
