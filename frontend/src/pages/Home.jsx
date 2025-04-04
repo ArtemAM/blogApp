@@ -2,7 +2,7 @@ import { Grid, Box } from '@mui/material';
 import Tags from '../component/Tags';
 import Post from '../component/Post';
 import PostSkeleton from '../component/PostSkeleton';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, postsSlice } from '../redux/slices/posts.slice';
 import { fetchTags, tagsSlice } from '../redux/slices/tags.slice';
@@ -11,7 +11,10 @@ import { loginSlice } from '../redux/slices/login.slice';
 
 function Home() {
   const dispatch = useDispatch();
-  const posts = useSelector(postsSlice.selectors.selectPosts);
+  const [sortType, setSortType] = useState('new');
+  const sortedPosts = useSelector((state) =>
+    postsSlice.selectors.selectSortedPosts(state, sortType),
+  );
   const userData = useSelector(loginSlice.selectors.selectUserData);
   const isLoadingPosts = useSelector(
     postsSlice.selectors.selectIsFetchPostsPending,
@@ -32,7 +35,7 @@ function Home() {
             ? Array.from(new Array(5)).map((_, index) => (
                 <PostSkeleton key={index} />
               ))
-            : posts.map((post) => (
+            : sortedPosts.map((post) => (
                 <Post
                   key={post.id}
                   id={post.id}
