@@ -127,7 +127,29 @@ function CreatePost() {
     }
   };
 
+  const handleSubmitUpdate = async () => {
+    try {
+      setIsLoading(true);
+      const postData = {
+        title,
+        text: content,
+        tags,
+        imageUrl: image,
+      };
+      const { postId } = await api.updatePost(id, postData);
+      navigate(`/posts/${postId}`);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      alert('Error updating post');
+      throw error;
+    }
+  };
+
   const handleCancel = () => {
+    if (id) {
+      navigate(`/`);
+    }
     setTitle('');
     setContent('');
     setTags([]);
@@ -212,15 +234,27 @@ function CreatePost() {
         />
       </Box>
       <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-        <Button
-          type="submit"
-          variant="contained"
-          startIcon={<Send />}
-          onClick={handleSubmit}
-          disabled={!title || !content || isLoading}
-        >
-          {isLoading ? 'Publishing...' : 'Publish'}
-        </Button>
+        {!id ? (
+          <Button
+            type="submit"
+            variant="contained"
+            startIcon={<Send />}
+            onClick={handleSubmit}
+            disabled={!title || !content || isLoading}
+          >
+            {isLoading ? 'Publishing...' : 'Publish'}
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            variant="contained"
+            startIcon={<Send />}
+            onClick={handleSubmitUpdate}
+            disabled={!title || !content || isLoading}
+          >
+            {isLoading ? 'Updating...' : 'Update'}
+          </Button>
+        )}
         <Button
           disabled={isLoading}
           variant="outlined"
