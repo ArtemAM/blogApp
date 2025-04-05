@@ -8,7 +8,7 @@ const initialState = {
   posts: {},
   ids: [],
   postsStatus: 'idle',
-  selectedPostStatus: 'idle',
+  postByIdStatus: 'idle',
 };
 
 export const fetchPosts = createAsyncThunk(
@@ -34,14 +34,9 @@ export const fetchPostById = createAsyncThunk(
     return data;
   },
   {
-    condition: (id, { getState }) => {
-      const { selectedPostStatus, selectedPost } = getState().posts;
-      if (
-        selectedPostStatus === 'pending' ||
-        (selectedPost && selectedPost.id === id)
-      ) {
-        return false;
-      }
+    condition: (_, { getState }) => {
+      const { postByIdStatus } = getState().posts;
+      if (postByIdStatus === 'pending') return false;
     },
   },
 );
@@ -97,15 +92,15 @@ export const postsSlice = createSlice({
       state.postsStatus = 'failed';
     });
     builder.addCase(fetchPostById.pending, (state) => {
-      state.selectedPostStatus = 'pending';
+      state.postByIdStatus = 'pending';
     });
     builder.addCase(fetchPostById.fulfilled, (state, action) => {
-      const data = action.payload;
-      state.selectedPostStatus = 'success';
-      state.posts[data.id] = data;
+      const post = action.payload;
+      state.postByIdStatus = 'success';
+      state.posts[post.id] = post;
     });
     builder.addCase(fetchPostById.rejected, (state) => {
-      state.selectedPostStatus = 'failed';
+      state.postByIdStatus = 'failed';
     });
     builder.addCase(fetchDeletePost.fulfilled, (state, action) => {
       const id = action.meta.arg;
