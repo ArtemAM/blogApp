@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
+import { useDispatch } from 'react-redux';
+import { fetchCreatePost } from '../redux/slices/posts.slice';
 
 const initialState = {
   title: '',
@@ -11,6 +13,7 @@ const initialState = {
 };
 
 export const usePostForm = (id, isAuth, post) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialState);
   const [currentTag, setCurrentTag] = useState('');
@@ -94,9 +97,15 @@ export const usePostForm = (id, isAuth, post) => {
         imageUrl: formData.imageUrl,
       };
 
-      const { postId } = isUpdate
-        ? await api.updatePost(id, postData)
-        : await api.createPost(postData);
+      let postId;
+
+      if (isUpdate) {
+        const { updatedId } = await api.updatePost(postId, postData);
+        postId = updatedId;
+      } else {
+        const { payload } = await dispatch(fetchCreatePost(postData));
+        postId = payload.postId;
+      }
 
       navigate(`/posts/${postId}`);
     } catch (error) {
