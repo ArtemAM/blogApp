@@ -116,7 +116,7 @@ export const postsSlice = createSlice({
       state.ids = state.ids.filter((postId) => postId !== id);
     });
     builder.addCase(fetchCreatePost.fulfilled, (state, action) => {
-      const post = action.payload;
+      const { post } = action.payload;
       state.posts[post.id] = post;
       state.ids.push(post.id);
     });
