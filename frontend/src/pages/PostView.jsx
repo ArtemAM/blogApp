@@ -16,7 +16,13 @@ function PostView() {
   useEffect(() => {
     dispatch(fetchPostById(id));
   }, [dispatch, id]);
-  if (!post) return <div>Post not found</div>;
+  if (!post) {
+    return (
+      <Box mt={10} textAlign="center" fontSize={50}>
+        Post not found
+      </Box>
+    );
+  }
   return (
     <Paper elevation={3} sx={{ maxWidth: '800px', mx: 'auto', mt: 4 }}>
       <Box
