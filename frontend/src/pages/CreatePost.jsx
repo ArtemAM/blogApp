@@ -18,11 +18,15 @@ import { loginSlice } from '../redux/slices/login.slice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePostForm } from '../hooks/usePostForm';
 import { API_URL } from '../config';
+import { postsSlice } from '../redux/slices/posts.slice';
 
 function CreatePost() {
   const isAuth = useSelector(loginSlice.selectors.selectIsAuth);
   const navigate = useNavigate();
   const { id } = useParams();
+  const post = useSelector((state) =>
+    postsSlice.selectors.selectPostById(state, id),
+  );
   const fileInputRef = useRef(null);
 
   const {
@@ -36,7 +40,7 @@ function CreatePost() {
     handleFileChange,
     handleSubmit,
     resetForm,
-  } = usePostForm(id, isAuth);
+  } = usePostForm(id, isAuth, post);
 
   const options = useMemo(
     () => ({
