@@ -10,16 +10,12 @@ import { API_URL } from '../config';
 function PostView() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const isLoading = useSelector(
-    postsSlice.selectors.selectIsFetchPostByIdPending,
-  );
   const post = useSelector((state) =>
     postsSlice.selectors.selectPostById(state, id),
   );
   useEffect(() => {
     dispatch(fetchPostById(id));
   }, [dispatch, id]);
-  if (isLoading && !post) return <div>Loading...</div>;
   if (!post) return <div>Post not found</div>;
   return (
     <Paper elevation={3} sx={{ maxWidth: '800px', mx: 'auto', mt: 4 }}>
