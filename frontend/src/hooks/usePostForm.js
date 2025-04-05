@@ -10,7 +10,7 @@ const initialState = {
   file: null,
 };
 
-export const usePostForm = (id, isAuth) => {
+export const usePostForm = (id, isAuth, post) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialState);
   const [currentTag, setCurrentTag] = useState('');
@@ -22,21 +22,21 @@ export const usePostForm = (id, isAuth) => {
       return;
     }
 
-    const fetchData = async () => {
-      if (!id) return;
+    if (!id && !post) return;
+    const fillForm = () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        const { title, text, tags, imageUrl } = await api.getPostById(id);
+        const { title, text, tags, imageUrl } = post;
         setFormData({ title, text, tags, imageUrl, file: imageUrl });
-      } catch (error) {
-        console.warn('Error fetching post data:', error);
+      } catch (err) {
+        console.error('Error filling form:', err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
-  }, [id, isAuth, navigate]);
+    fillForm();
+  }, [id, isAuth, navigate, post]);
 
   const handleChange = (field) => (value) => {
     setFormData((prevData) => ({
