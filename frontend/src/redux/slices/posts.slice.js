@@ -70,9 +70,9 @@ export const postsSlice = createSlice({
       },
     ),
     selectPostById: (state, id) => state.posts[id],
-    selectIsFetchPostsIdle: (state) => state.status === 'idle',
-    selectIsFetchPostsPending: (state) => state.status === 'pending',
-    selectIsFetchPostByIdPending: (state) => state.status === 'pending',
+    selectIsFetchPostsIdle: (state) => state.postsStatus === 'idle',
+    selectIsFetchPostsPending: (state) => state.postsStatus === 'pending',
+    selectIsFetchPostByIdPending: (state) => state.postByIdStatus === 'pending',
   },
   reducers: {},
   extraReducers: (builder) => {
