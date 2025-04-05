@@ -108,7 +108,9 @@ export const postsSlice = createSlice({
       state.selectedPostStatus = 'failed';
     });
     builder.addCase(fetchDeletePost.fulfilled, (state, action) => {
-      state.posts = state.posts.filter((post) => post.id !== action.meta.arg);
+      const id = action.meta.arg;
+      delete state.posts[id];
+      state.ids = state.ids.filter((postId) => postId !== id);
     });
   },
 });
