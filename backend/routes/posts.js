@@ -27,11 +27,13 @@ router.post("/", authMiddleware, postValidation, async (req, res) => {
 	try {
 		// Вызов функции для добавления статьи в базу данных
 		const postId = await createPost(userId, title, text, tags, imageUrl);
+		const post = await getPostById(postId); // Получаем созданную статью
 
 		// Возвращаем успешный ответ с ID созданной статьи
 		res.status(201).json({
 			message: "Post created successfully",
 			postId,
+			post,
 		});
 	} catch (err) {
 		console.error("Error creating post:", err);
