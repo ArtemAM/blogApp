@@ -49,6 +49,14 @@ export const fetchDeletePost = createAsyncThunk(
   },
 );
 
+export const fetchCreatePost = createAsyncThunk(
+  'posts/fetchCreatePost',
+  async (postData, { extra }) => {
+    const data = await extra.api.createPost(postData);
+    return data;
+  },
+);
+
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
@@ -106,6 +114,11 @@ export const postsSlice = createSlice({
       const id = action.meta.arg;
       delete state.posts[id];
       state.ids = state.ids.filter((postId) => postId !== id);
+    });
+    builder.addCase(fetchCreatePost.fulfilled, (state, action) => {
+      const post = action.payload;
+      state.posts[post.id] = post;
+      state.ids.push(post.id);
     });
   },
 });
