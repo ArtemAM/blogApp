@@ -12,7 +12,7 @@ const initialState = {
   file: null,
 };
 
-export const usePostForm = (id, isAuth, post) => {
+export const usePostForm = (id, post) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialState);
@@ -20,11 +20,6 @@ export const usePostForm = (id, isAuth, post) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem('token') && !isAuth) {
-      navigate('/');
-      return;
-    }
-
     if (!id && !post) return;
     const fillForm = () => {
       setIsLoading(true);
@@ -39,7 +34,7 @@ export const usePostForm = (id, isAuth, post) => {
     };
 
     fillForm();
-  }, [id, isAuth, navigate, post]);
+  }, [id, navigate, post]);
 
   const handleChange = (field) => (value) => {
     setFormData((prevData) => ({

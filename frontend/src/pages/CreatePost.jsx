@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useCallback } from 'react';
+import React, { useRef, useMemo, useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -29,6 +29,13 @@ function CreatePost() {
   );
   const fileInputRef = useRef(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token || !isAuth) {
+      navigate('/');
+    }
+  }, [isAuth, navigate]);
+
   const {
     formData,
     currentTag,
@@ -40,7 +47,7 @@ function CreatePost() {
     handleFileChange,
     handleSubmit,
     resetForm,
-  } = usePostForm(id, isAuth, post);
+  } = usePostForm(id, post);
 
   const options = useMemo(
     () => ({
