@@ -37,14 +37,9 @@ export const loginSlice = createSlice({
     selectUserData: (state) => state.userData,
     selectIsLoginPending: (state) => state.status === 'pending',
     selectIsLoginSuccess: (state) => state.status === 'success',
-    selectIsLoginRejected: (state) => state.status === 'rejected',
     selectIsAuth: (state) => !!state.userData,
   },
   reducers: {
-    resetState: (state) => {
-      state.status = 'idle';
-      state.userData = null;
-    },
     logout: (state) => {
       state.userData = null;
       state.status = 'idle';
@@ -70,7 +65,7 @@ export const loginSlice = createSlice({
         state.userData = action.payload;
       })
       .addCase(fetchAuthUser.rejected, (state) => {
-        state.status = 'idle';
+        state.status = 'rejected';
       })
       .addCase(fetchRegister.fulfilled, (state, action) => {
         state.status = 'success';
