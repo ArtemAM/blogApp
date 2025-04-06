@@ -3,28 +3,35 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin, loginSlice } from '../redux/slices/login.slice';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 function Login() {
   const dispatch = useDispatch();
   const isLoading = useSelector(loginSlice.selectors.selectIsLoginPending);
   const isSuccess = useSelector(loginSlice.selectors.selectIsLoginSuccess);
-  const isRejected = useSelector(loginSlice.selectors.selectIsLoginRejected);
   const navigate = useNavigate();
+  const [showError, setShowError] = useState(false);
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const onSubmit = async (values) => {
     const result = await dispatch(fetchLogin(values));
-    const token = result.payload.token;
+    const token = result?.payload?.token;
     if (token) {
       localStorage.setItem('token', token);
     }
+    setShowError(!token);
   };
-  const handleInputChange = () => {
-    dispatch(loginSlice.actions.resetState());
-  };
+  const watchedEmail = watch('email');
+  const watchedPassword = watch('password');
+
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (showError) setShowError(false);
+  }, [watchedEmail, watchedPassword]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -67,9 +74,6 @@ function Login() {
               value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
               message: 'Invalid email address',
             },
-            onChange: () => {
-              handleInputChange();
-            },
           })}
           error={!!errors.email}
           helperText={errors.email ? errors.email.message : ''}
@@ -89,9 +93,6 @@ function Login() {
               value: 6,
               message: 'Password must be at least 6 characters long',
             },
-            onChange: () => {
-              handleInputChange();
-            },
           })}
           error={!!errors.password}
           helperText={errors.password ? errors.password.message : ''}
@@ -107,7 +108,7 @@ function Login() {
           {isLoading ? 'Loading...' : 'Login'}
         </Button>
       </Box>
-      {isRejected && (
+      {showError && (
         <Alert severity="error" sx={{ mt: 2 }}>
           Неверные данные. Проверьте email и пароль.
         </Alert>
