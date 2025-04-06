@@ -26,7 +26,12 @@ function Login() {
     dispatch(loginSlice.actions.resetState());
   };
 
-  if (isSuccess) navigate('/');
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/');
+    }
+  }, [isSuccess, navigate]);
+
   return (
     <Box
       sx={{
