@@ -17,6 +17,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeletePost } from '../redux/slices/posts.slice';
 import { loginSlice } from '../redux/slices/login.slice';
+import { API_URL } from '../config';
 
 function PostActions({ id }) {
   const dispatch = useDispatch();
@@ -80,7 +81,12 @@ function Post({
         '&:hover .post-actions': { opacity: 1 },
       }}
     >
-      <CardMedia component="img" height="250" image={image} alt={title} />
+      <CardMedia
+        component="img"
+        height="250"
+        image={image ? `${API_URL}${image}` : '../../public/post.png'}
+        alt={title}
+      />
       <AuthorInfo avatar={avatar} author={author} date={date} />
       <CardContent>
         <Typography variant="h6" gutterBottom>

@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { postsSlice } from '../redux/slices/posts.slice';
 import { tagsSlice } from '../redux/slices/tags.slice';
-import { API_URL } from '../config';
 
 function Home() {
   const [sortType, setSortType] = useState('new');
@@ -56,9 +55,7 @@ function PostList({ posts, isLoading }) {
     <Post
       key={post.id}
       id={post.id}
-      image={
-        post.imageUrl ? `${API_URL}${post.imageUrl}` : '../../public/post.png'
-      }
+      image={post.imageUrl}
       title={post.title}
       text={post.text}
       author={post.author}
