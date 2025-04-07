@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { postsSlice } from '../redux/slices/posts.slice';
 import { tagsSlice } from '../redux/slices/tags.slice';
-import TagsSkeleton from '../component/TagsSkeleton';
 import { API_URL } from '../config';
 
 function Home() {
@@ -43,11 +42,7 @@ function Home() {
         </Box>
       </Grid>
       <Grid size={3} sx={{ alignSelf: 'flex-start' }}>
-        {isLoadingTags ? (
-          <TagsSkeleton />
-        ) : (
-          <Tags onTagClick={handleTagClick} />
-        )}
+        <Tags onTagClick={handleTagClick} isLoading={isLoadingTags} />
       </Grid>
     </Grid>
   );
