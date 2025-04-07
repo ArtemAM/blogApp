@@ -13,7 +13,7 @@ import TagIcon from '@mui/icons-material/Tag';
 import { useSelector } from 'react-redux';
 import { tagsSlice } from '../redux/slices/tags.slice';
 
-function Tags() {
+function Tags({ onTagClick }) {
   const tags = useSelector(tagsSlice.selectors.selectTags);
   return (
     <Box>
@@ -23,7 +23,11 @@ function Tags() {
       <Divider />
       <List>
         {tags.map((tag) => (
-          <ListItemButton key={tag} sx={{ padding: 0 }}>
+          <ListItemButton
+            onClick={() => onTagClick(tag)}
+            key={tag}
+            sx={{ padding: 0 }}
+          >
             <ListItem sx={{ padding: 0 }}>
               <ListItemIcon>
                 <TagIcon />
