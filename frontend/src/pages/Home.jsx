@@ -1,4 +1,4 @@
-import { Grid, Box, ButtonGroup, Button } from '@mui/material';
+import { Grid, Box, ButtonGroup, Button, Typography } from '@mui/material';
 import Tags from '../component/Tags';
 import Post from '../component/Post';
 import PostSkeleton from '../component/PostSkeleton';
@@ -11,8 +11,13 @@ import { API_URL } from '../config';
 
 function Home() {
   const [sortType, setSortType] = useState('new');
-  const sortedPosts = useSelector((state) =>
-    postsSlice.selectors.selectSortedPosts(state, sortType),
+  const [selectedTag, setSelectedTag] = useState(null);
+  const filteredAndSortedPosts = useSelector((state) =>
+    postsSlice.selectors.selectFilteredAndSortedPosts(
+      state,
+      sortType,
+      selectedTag,
+    ),
   );
   const isLoadingPosts = useSelector(
     postsSlice.selectors.selectIsFetchPostsPending,
@@ -20,9 +25,26 @@ function Home() {
   const isLoadingTags = useSelector(
     tagsSlice.selectors.selectIsFetchTagsPending,
   );
+  const handleTagClick = (tag) => {
+    setSelectedTag(tag);
+  };
   return (
     <Grid container spacing={2} alignItems="flex-start" sx={{ paddingTop: 4 }}>
       <Grid size={9}>
+        {selectedTag && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="h6">
+              #{selectedTag}
+              <Button
+                onClick={() => setSelectedTag(null)}
+                size="small"
+                sx={{ ml: 2 }}
+              >
+                Reset
+              </Button>
+            </Typography>
+          </Box>
+        )}
         <Box sx={{ marginBottom: 2 }}>
           <ButtonGroup aria-label="sort buttons">
             <Button
@@ -42,7 +64,7 @@ function Home() {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {isLoadingPosts
             ? [...Array(5)].map((_, index) => <PostSkeleton key={index} />)
-            : sortedPosts.map((post) => (
+            : filteredAndSortedPosts.map((post) => (
                 <Post
                   key={post.id}
                   id={post.id}
@@ -64,7 +86,11 @@ function Home() {
         </Box>
       </Grid>
       <Grid size={3} sx={{ alignSelf: 'flex-start' }}>
-        {isLoadingTags ? <TagsSkeleton /> : <Tags />}
+        {isLoadingTags ? (
+          <TagsSkeleton />
+        ) : (
+          <Tags onTagClick={handleTagClick} />
+        )}
       </Grid>
     </Grid>
   );
