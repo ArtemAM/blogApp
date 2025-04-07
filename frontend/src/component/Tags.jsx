@@ -12,9 +12,13 @@ import {
 import TagIcon from '@mui/icons-material/Tag';
 import { useSelector } from 'react-redux';
 import { tagsSlice } from '../redux/slices/tags.slice';
+import TagsSkeleton from '../component/TagsSkeleton';
 
-function Tags({ onTagClick }) {
+function Tags({ onTagClick, isLoading }) {
   const tags = useSelector(tagsSlice.selectors.selectTags);
+  if (isLoading) {
+    return <TagsSkeleton />;
+  }
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
