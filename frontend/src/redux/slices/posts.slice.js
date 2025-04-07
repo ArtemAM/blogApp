@@ -61,20 +61,23 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   selectors: {
-    selectSortedPosts: createSelector(
+    selectFilteredAndSortedPosts: createSelector(
       (state) => state.posts,
       (state) => state.ids,
       (_, sortType) => sortType,
-      (posts, ids, sortType) => {
-        return ids
-          .map((id) => posts[id])
-          .sort((a, b) => {
-            if (sortType === 'new') {
-              return new Date(b.createdAt) - new Date(a.createdAt);
-            } else if (sortType === 'popular') {
-              return b.viewsCount - a.viewsCount;
-            }
-          });
+      (_, __, filterTag) => filterTag,
+      (posts, ids, sortType, filterTag) => {
+        let filtered = ids.map((id) => posts[id]);
+        if (filterTag) {
+          filtered = filtered.filter((post) => post.tags.includes(filterTag));
+        }
+        return filtered.sort((a, b) => {
+          if (sortType === 'new') {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          } else if (sortType === 'popular') {
+            return b.viewsCount - a.viewsCount;
+          }
+        });
       },
     ),
     selectPostById: (state, id) => state.posts[id],
