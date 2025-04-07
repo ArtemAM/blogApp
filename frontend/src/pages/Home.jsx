@@ -39,27 +39,7 @@ function Home() {
         )}
         <SortButtonGroup setSortType={setSortType} sortType={sortType} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {isLoadingPosts
-            ? [...Array(5)].map((_, index) => <PostSkeleton key={index} />)
-            : filteredAndSortedPosts.map((post) => (
-                <Post
-                  key={post.id}
-                  id={post.id}
-                  image={
-                    post.imageUrl
-                      ? `${API_URL}${post.imageUrl}`
-                      : '../../public/post.png'
-                  }
-                  title={post.title}
-                  text={post.text}
-                  author={post.author}
-                  date={post.createdAt}
-                  tags={post.tags}
-                  views={post.viewsCount}
-                  avatar={post.avatar}
-                  authorId={post.authorId}
-                />
-              ))}
+          <PostList posts={filteredAndSortedPosts} isLoading={isLoadingPosts} />
         </Box>
       </Grid>
       <Grid size={3} sx={{ alignSelf: 'flex-start' }}>
@@ -71,6 +51,29 @@ function Home() {
       </Grid>
     </Grid>
   );
+}
+
+function PostList({ posts, isLoading }) {
+  if (isLoading) {
+    return [...Array(5)].map((_, index) => <PostSkeleton key={index} />);
+  }
+  return posts.map((post) => (
+    <Post
+      key={post.id}
+      id={post.id}
+      image={
+        post.imageUrl ? `${API_URL}${post.imageUrl}` : '../../public/post.png'
+      }
+      title={post.title}
+      text={post.text}
+      author={post.author}
+      date={post.createdAt}
+      tags={post.tags}
+      views={post.viewsCount}
+      avatar={post.avatar}
+      authorId={post.authorId}
+    />
+  ));
 }
 
 function ActiveTagDisplay({ selectedTag, setSelectedTag }) {
