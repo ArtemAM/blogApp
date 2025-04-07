@@ -32,35 +32,12 @@ function Home() {
     <Grid container spacing={2} alignItems="flex-start" sx={{ paddingTop: 4 }}>
       <Grid size={9}>
         {selectedTag && (
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6">
-              #{selectedTag}
-              <Button
-                onClick={() => setSelectedTag(null)}
-                size="small"
-                sx={{ ml: 2 }}
-              >
-                Reset
-              </Button>
-            </Typography>
-          </Box>
+          <ActiveTagDisplay
+            selectedTag={selectedTag}
+            setSelectedTag={setSelectedTag}
+          />
         )}
-        <Box sx={{ marginBottom: 2 }}>
-          <ButtonGroup aria-label="sort buttons">
-            <Button
-              onClick={() => setSortType('new')}
-              variant={sortType === 'new' ? 'contained' : 'text'}
-            >
-              Newest
-            </Button>
-            <Button
-              onClick={() => setSortType('popular')}
-              variant={sortType === 'popular' ? 'contained' : 'text'}
-            >
-              Popular
-            </Button>
-          </ButtonGroup>
-        </Box>
+        <SortButtonGroup setSortType={setSortType} sortType={sortType} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {isLoadingPosts
             ? [...Array(5)].map((_, index) => <PostSkeleton key={index} />)
@@ -93,6 +70,44 @@ function Home() {
         )}
       </Grid>
     </Grid>
+  );
+}
+
+function ActiveTagDisplay({ selectedTag, setSelectedTag }) {
+  return (
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="h6">
+        #{selectedTag}
+        <Button
+          onClick={() => setSelectedTag(null)}
+          size="small"
+          sx={{ ml: 2 }}
+        >
+          Reset
+        </Button>
+      </Typography>
+    </Box>
+  );
+}
+
+function SortButtonGroup({ setSortType, sortType }) {
+  return (
+    <Box sx={{ marginBottom: 2 }}>
+      <ButtonGroup aria-label="sort buttons">
+        <Button
+          onClick={() => setSortType('new')}
+          variant={sortType === 'new' ? 'contained' : 'text'}
+        >
+          Newest
+        </Button>
+        <Button
+          onClick={() => setSortType('popular')}
+          variant={sortType === 'popular' ? 'contained' : 'text'}
+        >
+          Popular
+        </Button>
+      </ButtonGroup>
+    </Box>
   );
 }
 
